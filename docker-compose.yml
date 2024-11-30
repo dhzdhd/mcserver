@@ -1,0 +1,27 @@
+services:
+  mcserver:
+    container_name: mcserver
+    image: itzg/minecraft-server
+    stdin_open: true
+    ports:
+      - 25565:25565
+    environment:
+      EULA: true
+      MEMORY: "2G"
+      DIFFICULTY: "hard"
+      TYPE: "PAPER"
+      VERSION: "1.21.3"
+      SNOOPER_ENABLED: false
+      ONLINE_MODE: false
+      SERVER_NAME: "azuremc"
+      # SPIGET_RESOURCES: "82528"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+  mcbackup:
+    container_name: mcbackup
+    image: itzg/mc-backup
+    environment:
+      BACKUP_INTERVAL: "2h"
+    restart: unless-stopped
