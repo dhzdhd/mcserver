@@ -15,13 +15,37 @@ services:
       ONLINE_MODE: false
       SERVER_NAME: "azuremc"
       # SPIGET_RESOURCES: "82528"
+    env_file: .env
     volumes:
       - ./data:/data
+    depends_on:
+      mcrestore:
+          condition: service_completed_successfully
     restart: unless-stopped
 
   mcbackup:
     container_name: mcbackup
     image: itzg/mc-backup
     environment:
-      BACKUP_INTERVAL: "2h"
+      RCON_HOST: mcserver
+      BACKUP_INTERVAL: "10m"
+      INITIAL_DELAY: 0
+      BACKUP_METHOD: "rclone"
+    env_file: .env
+    volumes:
+      - ./data:/data:ro
+      - ./backups:/backups
+      - ./rclone.config:/config/rclone/rclone.conf
+    depends_on:
+      mcserver:
+        condition: service_healthy
     restart: unless-stopped
+
+  mcrestore:
+    container_name: mcrestore
+    image: itzg/mc-backup
+    entrypoint: restore-tar-backup
+    volumes:
+      - ./data:/data
+      - ./backups:/backups:ro
+    restart: "no"
