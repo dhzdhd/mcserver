@@ -14,6 +14,8 @@ services:
       SNOOPER_ENABLED: false
       ONLINE_MODE: false
       SERVER_NAME: "azuremc"
+      RESOURCE_PACK: https://cdn.modrinth.com/data/ItHr72Fy/versions/pbKmDVlm/Fullbright-UB-1.21.zip
+      RESOURCE_PACK_ENFORCE: true
       # SPIGET_RESOURCES: "82528"
     env_file: .env
     volumes:

@@ -230,6 +230,22 @@ semver = ">=2.8.1"
 typing-extensions = {version = ">=4.11", markers = "python_version < \"3.11\""}
 
 [[package]]
+name = "pulumi-command"
+version = "1.0.1"
+description = "The Pulumi Command Provider enables you to execute commands and scripts either locally or remotely as part of the Pulumi resource model."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pulumi_command-1.0.1-py3-none-any.whl", hash = "sha256:672cdea9c0ced0f79ed47e578267a2b2160dcf88626dde34ee96f5524a003574"},
+    {file = "pulumi_command-1.0.1.tar.gz", hash = "sha256:58e123707956aa7a9be2ce89c009642539cde5d9fa02e1e10501662600894843"},
+]
+
+[package.dependencies]
+parver = ">=0.2.1"
+pulumi = ">=3.0.0,<4.0.0"
+semver = ">=2.8.1"
+
+[[package]]
 name = "pulumi-random"
 version = "4.16.7"
 description = "A Pulumi package to safely use randomness in Pulumi programs."
@@ -360,4 +376,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "a5aa079687f407f00bfdb7eae3bc7926f8a7902788aa3615a82f189832995e0a"
+content-hash = "ca92208934e5acc5bae473549dffdb9a46d48625668807d34f03fe0ca956a8ec"

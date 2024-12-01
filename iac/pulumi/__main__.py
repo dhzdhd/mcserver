@@ -2,6 +2,7 @@ import pulumi
 from pulumi_azure_native import resources, network, compute
 from pulumi_random import random_string
 import pulumi_tls as tls
+import pulumi_command as command
 import base64
 
 # Import the program's configuration settings
@@ -184,3 +185,11 @@ pulumi.export(
     "privatekey",
     ssh_key.private_key_openssh,
 )
+
+
+local_save_key = command.local.Command("saveKey",
+    create=ssh_key.private_key_pem.apply(lambda key: f'echo "{key}" > ./private_key.pem'),
+    triggers=[ssh_key.private_key_pem])
+
+# Export the private key content to the Pulumi stack output (for reference purposes)
+pulumi.export("privateKeyPem", ssh_key.private_key_pem)
