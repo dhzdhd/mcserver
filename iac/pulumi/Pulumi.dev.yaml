@@ -1,6 +1,6 @@
 config:
   azure-native:location: CentralIndia
-  mcserver:adminUsername: deep
+  mcserver:adminUsername: mcserver
   mcserver:osImage: Debian:debian-11:11:latest
   mcserver:servicePort: "80"
   mcserver:vmName: mcserver
