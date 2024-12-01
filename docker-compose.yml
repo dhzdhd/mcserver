@@ -16,6 +16,8 @@ services:
       SERVER_NAME: "azuremc"
       RESOURCE_PACK: https://cdn.modrinth.com/data/ItHr72Fy/versions/pbKmDVlm/Fullbright-UB-1.21.zip
       RESOURCE_PACK_ENFORCE: true
+      RCON_CMDS_STARTUP: |-
+        gamerule keepInventory true
       # SPIGET_RESOURCES: "82528"
     env_file: .env
     volumes:
