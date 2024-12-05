@@ -1,0 +1,7 @@
+---
+
+- name: Run local playbook
+  import_playbook: "local.yml"
+
+- name: Run cloud playbook
+  import_playbook: "cloud.yml"

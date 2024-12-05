@@ -1,0 +1,5 @@
+---
+namespace: "mcserver"
+dependencies:
+  - "geerlingguy.pip"
+  - "geerlingguy.docker"

@@ -14,8 +14,12 @@
 
 - Copy the preferred backup `.tgz` file to `backups/` directory
 - Run `pulumi -C iac/pulumi up`
-- Run `ansible-playbook -i iac/ansible/hosts.yml all --private-key <pkey_file> -u mcserver playbook.yml`
+- Run `ansible-playbook --ask-become-pass -i iac/ansible/hosts.yml iac/ansible/playbooks/main.yml`
 - Access the server at `<ip_address>:25565`
+
+### Shutdown & Cleanup
+
+- Run `pulumi -C iac/pulumi down`
 
 ## Configuration
 
