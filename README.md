@@ -14,7 +14,6 @@
 
 - Copy the preferred backup `.tgz` file to `backups/` directory
 - Run `pulumi -C iac/pulumi up`
-- Copy the IP address shown to the `ansible_host` field in the `dev` group in `iac/ansible/hosts.yml`
 - Run `ansible-playbook --ask-become-pass -i iac/ansible/hosts.yml iac/ansible/playbooks/main.yml`
 - Access the server at `<ip_address>:25565`
 
@@ -27,6 +26,7 @@
 ### Server config
 
 - To change server name/VM/location/image..., edit `iac/pulumi/Pulumi.dev.yaml`
+- To edit Ansible host config, edit `iac/ansible/hosts.yaml`
 
 ### Minecraft config
 
