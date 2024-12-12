@@ -1,7 +1,7 @@
 ---
-
 - name: Cloud playbook
   hosts: cloudgroup
+  become: true
 
   vars:
     pip_install_packages:
