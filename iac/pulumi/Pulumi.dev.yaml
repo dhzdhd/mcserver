@@ -5,3 +5,4 @@ config:
   mcserver:servicePort: "80"
   mcserver:vmName: mcserver
   mcserver:vmSize: Standard_B2s
+  mcserver:domainName: mcserver-dhzdhd

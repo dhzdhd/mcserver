@@ -12,6 +12,7 @@ vm_size = config.get("vmSize", "Standard_A1_v2")
 os_image = config.get("osImage", "Debian:debian-11:11:latest")
 admin_username = config.get("adminUsername", "pulumiuser")
 service_port = config.get("servicePort", "80")
+domain_name = config.get("domainName", "mcserver-dhzdhd")
 
 os_image_publisher, os_image_offer, os_image_sku, os_image_version = os_image.split(":")
 
@@ -41,13 +42,6 @@ virtual_network = network.VirtualNetwork(
         },
     ],
 )
-# Use a random string to give the VM a unique DNS name
-domain_name_label = random_string.RandomString(
-    "domain-label",
-    length=8,
-    upper=False,
-    special=False,
-).result.apply(lambda result: f"{vm_name}-{result}")
 
 # Create a public IP address for the VM
 public_ip = network.PublicIPAddress(
@@ -55,7 +49,7 @@ public_ip = network.PublicIPAddress(
     resource_group_name=resource_group.name,
     public_ip_allocation_method=network.IpAllocationMethod.DYNAMIC,
     dns_settings={
-        "domain_name_label": domain_name_label,
+        "domain_name_label": domain_name,
     },
 )
 
@@ -73,11 +67,7 @@ security_group = network.NetworkSecurityGroup(
             "source_port_range": "*",
             "source_address_prefix": "*",
             "destination_address_prefix": "*",
-            "destination_port_ranges": [
-                service_port,
-                "22",
-                "25565"
-            ],
+            "destination_port_ranges": [service_port, "22", "25565"],
         },
     ],
 )
@@ -102,22 +92,6 @@ network_interface = network.NetworkInterface(
         },
     ],
 )
-
-# Define a script to be run when the VM starts up
-init_script = f"""#!/bin/bash
-    echo '<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Hello, world!</title>
-    </head>
-    <body>
-        <h1>Hello, world! 👋</h1>
-        <p>Deployed with 💜 by <a href="https://pulumi.com/">Pulumi</a>.</p>
-    </body>
-    </html>' > index.html
-    sudo python3 -m http.server {service_port} &
-    """
 
 # Create the virtual machine
 vm = compute.VirtualMachine(
@@ -187,9 +161,13 @@ pulumi.export(
 )
 
 
-local_save_key = command.local.Command("saveKey",
-    create=ssh_key.private_key_pem.apply(lambda key: f'echo "{key}" > ./private_key.pem'),
-    triggers=[ssh_key.private_key_pem])
+local_save_key = command.local.Command(
+    "saveKey",
+    create=ssh_key.private_key_pem.apply(
+        lambda key: f'echo "{key}" > ./private_key.pem'
+    ),
+    triggers=[ssh_key.private_key_pem],
+)
 
 # Export the private key content to the Pulumi stack output (for reference purposes)
 pulumi.export("privateKeyPem", ssh_key.private_key_pem)
