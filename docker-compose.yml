@@ -11,7 +11,7 @@ services:
       MEMORY: "2G"
       DIFFICULTY: "hard"
       TYPE: "PAPER"
-      VERSION: "1.21.3"
+      VERSION: "1.21.4"
       SNOOPER_ENABLED: false
       ONLINE_MODE: false
       SERVER_NAME: "azuremc"

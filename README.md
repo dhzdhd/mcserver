@@ -6,9 +6,9 @@
 
 - Download [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html), [Pulumi](https://www.pulumi.com/docs/iac/download-install/), [RClone](https://rclone.org/install/) and [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 - Run `az login` to login to your Microsoft account for Pulumi
-- Create an RClone config by executing - `rclone config`
+- Create an RClone config by executing - `rclone config` and store the `rclone.config` file in the root project directory
 - Create a `.env` file using `.env-example` as a template
-- Download backups from OneDrive if they exist
+- Download backups from OneDrive if they exist (only the needed `.tgz` file)
 
 ### Local setup
 

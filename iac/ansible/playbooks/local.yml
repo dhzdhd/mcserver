@@ -1,40 +1,43 @@
 ---
 - name: Local playbook
   hosts: localgroup
-  become: true
 
   vars:
-    new_key_file_path: "~/.ssh/private_key.pem"
-    old_key_file_path: "../../pulumi/private_key.pem"
+    # ~ is not the same as /home/deep
+    old_key_file_path: "/home/deep/.ssh/private_key.pem"
+    new_key_file_path: "../../pulumi/private_key.pem"
 
   tasks:
     - name: Check whether new private key exists
       ansible.builtin.stat:
-        path: "{{ old_key_file_path }}"
-      register: old_key_stat
-
-    - name: End play if new private key does not exist
-      ansible.builtin.meta: end_play
-      when: not old_key_stat.stat.exists
-
-    - name: Check whether ~/.ssh private key already exists
-      ansible.builtin.stat:
         path: "{{ new_key_file_path }}"
       register: new_key_stat
 
+    - name: End play if new private key does not exist
+      ansible.builtin.meta: end_play
+      when: not new_key_stat.stat.exists
+
+    - name: Check whether old private key exists
+      become: true
+      ansible.builtin.stat:
+        path: "{{ old_key_file_path }}"
+      register: old_key_stat
+
     - name: Delete current private key present in ~/.ssh
+      become: true
       ansible.builtin.file:
-        path: "{{ new_key_file_path }}"
+        path: "{{ old_key_file_path }}"
         state: absent
-      when: new_key_stat.stat.exists
+      when: old_key_stat.stat.exists
 
     - name: Copy private key file to ~/.ssh
+      # become: true
       ansible.builtin.copy:
-        src: "{{ old_key_file_path }}"
-        dest: "~/.ssh/"
-        mode: "400"
+        src: "{{ new_key_file_path }}"
+        dest: "{{ old_key_file_path }}"
+        mode: "0400"
 
     - name: Delete original copy of private key
       ansible.builtin.file:
-        path: "{{ old_key_file_path }}"
+        path: "{{ new_key_file_path }}"
         state: absent
