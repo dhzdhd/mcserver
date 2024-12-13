@@ -18,6 +18,7 @@ services:
       RESOURCE_PACK_ENFORCE: true
       RCON_CMDS_STARTUP: |-
         gamerule keepInventory true
+        gamerule playerSleepingPercentage 0
       # SPIGET_RESOURCES: "82528"
     env_file: .env
     volumes:
