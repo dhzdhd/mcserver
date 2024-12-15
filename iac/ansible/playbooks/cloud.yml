@@ -16,26 +16,26 @@
       ansible.builtin.git:
         clone: true
         repo: "https://www.github.com/dhzdhd/mcserver"
-        dest: "~/mcserver"
+        dest: "/home/mcserver"
 
     - name: Copy local backups to server
       ansible.builtin.copy:
         src: "../../../backups/"
-        dest: "~/mcserver/backups/"
+        dest: "/home/mcserver/backups/"
         mode: "preserve"
 
     - name: Copy local .env file to server
       ansible.builtin.copy:
         src: "../../../.env"
-        dest: "~/mcserver/"
+        dest: "/home/mcserver/"
         mode: "preserve"
 
     - name: Copy local rclone config to server
       ansible.builtin.copy:
         src: "../../../rclone.config"
-        dest: "~/mcserver/"
+        dest: "/home/mcserver/"
         mode: "preserve"
 
     - name: Run server with docker compose
       community.docker.docker_compose_v2:
-        project_src: "~/mcserver"
+        project_src: "/home/mcserver"
