@@ -39,6 +39,7 @@ services:
       BACKUP_INTERVAL: "1h"
       INITIAL_DELAY: "5m"
       BACKUP_METHOD: "rclone"
+      PRUNE_BACKUPS_DAYS: 90
     env_file: .env
     volumes:
       - ./data:/data:ro
