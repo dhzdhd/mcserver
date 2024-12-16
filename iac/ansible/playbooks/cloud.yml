@@ -6,6 +6,8 @@
   vars:
     pip_install_packages:
       - name: docker
+      - name: requests
+        version: "2.29.0"
 
   roles:
     - geerlingguy.pip
@@ -39,20 +41,3 @@
     - name: Run server with docker compose
       community.docker.docker_compose_v2:
         project_src: "/home/server"
-
-    - name: Copy nginx config to swag
-      ansible.builtin.copy:
-        src: "../../../nginx.conf"
-        dest: "/home/server/swag/nginx/proxy-confs/mc.subdomain.conf"
-        mode: "preserve"
-
-    - name: Copy cloudflare config to swag
-      ansible.builtin.copy:
-        src: "../../../cloudflare.ini"
-        dest: "/home/server/swag/dns-conf"
-        mode: "preserve"
-
-    - name: Restart swag container
-      community.docker.docker_container:
-        name: swag
-        restart: true
