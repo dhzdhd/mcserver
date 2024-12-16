@@ -16,26 +16,43 @@
       ansible.builtin.git:
         clone: true
         repo: "https://www.github.com/dhzdhd/mcserver"
-        dest: "/home/mcserver"
+        dest: "/home/server"
 
     - name: Copy local backups to server
       ansible.builtin.copy:
         src: "../../../backups/"
-        dest: "/home/mcserver/backups/"
+        dest: "/home/server/backups/"
         mode: "preserve"
 
     - name: Copy local .env file to server
       ansible.builtin.copy:
         src: "../../../.env"
-        dest: "/home/mcserver/"
+        dest: "/home/server/"
         mode: "preserve"
 
     - name: Copy local rclone config to server
       ansible.builtin.copy:
         src: "../../../rclone.config"
-        dest: "/home/mcserver/"
+        dest: "/home/server/"
         mode: "preserve"
 
     - name: Run server with docker compose
       community.docker.docker_compose_v2:
-        project_src: "/home/mcserver"
+        project_src: "/home/server"
+
+    - name: Copy nginx config to swag
+      ansible.builtin.copy:
+        src: "../../../nginx.conf"
+        dest: "/home/server/swag/nginx/proxy-confs/mc.subdomain.conf"
+        mode: "preserve"
+
+    - name: Copy cloudflare config to swag
+      ansible.builtin.copy:
+        src: "../../../cloudflare.ini"
+        dest: "/home/server/swag/dns-conf"
+        mode: "preserve"
+
+    - name: Restart swag container
+      community.docker.docker_container:
+        name: swag
+        restart: true

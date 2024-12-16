@@ -1,4 +1,23 @@
 services:
+  swag:
+    container_name: swag
+    image: lscr.io/linuxserver/swag:latest
+    cap_add:
+      - NET_ADMIN
+    env_file:
+      .env
+    environment:
+      PUID: 1000
+      PGID: 1000
+      VALIDATION: dns
+      DNSPLUGIN: cloudflare
+      ONLY_SUBDOMAINS: true
+    volumes:
+      - ./swag/config:/config
+    ports:
+      - 443:443
+    restart: unless-stopped
+
   mcserver:
     container_name: mcserver
     image: itzg/minecraft-server
@@ -20,6 +39,8 @@ services:
       RCON_CMDS_STARTUP: |-
         gamerule keepInventory true
         gamerule playerSleepingPercentage 0
+        execute in the_nether run gamerule keepInventory true
+        execute in the_end run gamerule keepInventory true
       # SPIGET_RESOURCES: "82528"
     env_file: .env
     volumes:
@@ -34,8 +55,8 @@ services:
     image: itzg/mc-backup
     environment:
       RCON_HOST: mcserver
-      BACKUP_INTERVAL: "30m"
-      INITIAL_DELAY: 0
+      BACKUP_INTERVAL: "1h"
+      INITIAL_DELAY: "5m"
       BACKUP_METHOD: "rclone"
     env_file: .env
     volumes:
@@ -55,3 +76,6 @@ services:
       - ./data:/data
       - ./backups:/backups:ro
     restart: "no"
+
+# execute @e[type=PigZombie,c=1] ~ ~ ~ setblock -203 14 129 repeating_command_block[conditional=true]{Command:"/gamerule keepInventory true",auto:1b}
+# execute in minecraft:the_nether run setblock -118 94 106 repeating_command_block[conditional=true]{Command:"/gamerule keepInventory true",auto:1b} replace
