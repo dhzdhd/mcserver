@@ -5,11 +5,11 @@ import pulumi_command as command
 
 # Import the program's configuration settings
 config = pulumi.Config()
-vm_name = config.get("vmName", "my-server")
-vm_size = config.get("vmSize", "Standard_A1_v2")
+vm_name = config.get("vmName", "mcserver")
+vm_size = config.get("vmSize", "Standard_B2s")
 vm_location = config.get("vmLocation", "CentralIndia")
 os_image = config.get("osImage", "Debian:debian-11:11:latest")
-admin_username = config.get("adminUsername", "pulumiuser")
+admin_username = config.get("adminUsername", "mcserver")
 service_port = config.get("servicePort", "80")
 domain_name = config.get("domainName", "mcserver-dhzdhd")
 
