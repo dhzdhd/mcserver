@@ -1,14 +1,13 @@
 import pulumi
 from pulumi_azure_native import resources, network, compute
-from pulumi_random import random_string
 import pulumi_tls as tls
 import pulumi_command as command
-import base64
 
 # Import the program's configuration settings
 config = pulumi.Config()
 vm_name = config.get("vmName", "my-server")
 vm_size = config.get("vmSize", "Standard_A1_v2")
+vm_location = config.get("vmLocation", "CentralIndia")
 os_image = config.get("osImage", "Debian:debian-11:11:latest")
 admin_username = config.get("adminUsername", "pulumiuser")
 service_port = config.get("servicePort", "80")
@@ -24,7 +23,7 @@ ssh_key = tls.PrivateKey(
 )
 
 # Create a resource group
-resource_group = resources.ResourceGroup(vm_name)
+resource_group = resources.ResourceGroup(vm_name, {"location": vm_location})
 
 # Create a virtual network
 virtual_network = network.VirtualNetwork(
@@ -111,7 +110,6 @@ vm = compute.VirtualMachine(
     os_profile={
         "computer_name": vm_name,
         "admin_username": admin_username,
-        # "custom_data": base64.b64encode(bytes(init_script, "utf-8")).decode("utf-8"),
         "linux_configuration": {
             "disable_password_authentication": True,
             "ssh": {
@@ -155,10 +153,6 @@ pulumi.export(
         lambda settings: f"http://{settings.fqdn}:{service_port}"
     ),
 )
-pulumi.export(
-    "privatekey",
-    ssh_key.private_key_openssh,
-)
 
 
 local_save_key = command.local.Command(
@@ -168,6 +162,3 @@ local_save_key = command.local.Command(
     ),
     triggers=[ssh_key.private_key_pem],
 )
-
-# Export the private key content to the Pulumi stack output (for reference purposes)
-pulumi.export("privateKeyPem", ssh_key.private_key_pem)
