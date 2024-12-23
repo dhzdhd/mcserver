@@ -9,6 +9,9 @@
 - Create a remote for storing backups by running - `rclone --config ./rclone.config config` and follow the instructions shown.
 - Create a `.env` file using `.env-example` as a template
 - Download backups from OneDrive if they exist (only the needed `.tgz` file)
+- Run `pulumi config set azure-native:location <desired_location>`
+- Install all Ansible roles with `ansible-galaxy install -r requirements.yml`
+
 
 ### Local setup
 

@@ -58,6 +58,3 @@ services:
       - ./data:/data
       - ./backups:/backups:ro
     restart: "no"
-
-# execute @e[type=PigZombie,c=1] ~ ~ ~ setblock -203 14 129 repeating_command_block[conditional=true]{Command:"/gamerule keepInventory true",auto:1b}
-# execute in minecraft:the_nether run setblock -118 94 106 repeating_command_block[conditional=true]{Command:"/gamerule keepInventory true",auto:1b} replace
