@@ -23,7 +23,7 @@ ssh_key = tls.PrivateKey(
 )
 
 # Create a resource group
-resource_group = resources.ResourceGroup(vm_name, {"location": vm_location})
+resource_group = resources.ResourceGroup(vm_name)
 
 # Create a virtual network
 virtual_network = network.VirtualNetwork(
